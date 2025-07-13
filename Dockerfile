@@ -1,4 +1,10 @@
-# syntax=docker/dockerfile:1
+FROM python:3-alpine
 
-FROM nginx:stable-perl
-RUN echo "start nginx"
+RUN mkdir /data
+VOLUME /data
+
+EXPOSE 80
+
+WORKDIR /data
+
+CMD ["python", "-m" , "http.server", "80"]
