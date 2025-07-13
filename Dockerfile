@@ -3,8 +3,8 @@ FROM python:3-alpine
 RUN mkdir /data
 VOLUME /data
 
-EXPOSE 80
+EXPOSE 8080
 
 WORKDIR /data
 
-CMD ["python", "-m" , "http.server", "80"]
+CMD ["python", "-m" , "http.server", "8080"]
