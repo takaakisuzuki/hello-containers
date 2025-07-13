@@ -1,10 +1,21 @@
-FROM python:3-alpine
+FROM golang:1.24-alpine AS build
 
-RUN mkdir /data
-VOLUME /data
+# Set destination for COPY
+WORKDIR /app
 
+# Download any Go modules
+COPY container_src/go.mod ./
+RUN go mod download
+
+# Copy container source code
+COPY container_src/*.go ./
+
+# Build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /server
+
+FROM scratch
+COPY --from=build /server /server
 EXPOSE 8080
 
-WORKDIR /data
-
-CMD ["python", "-m" , "http.server", "8080"]
+# Run
+CMD ["/server"]
